@@ -52,19 +52,24 @@ public class AppInitNoStyle extends Application {
         // поток мониторинга новых сообщений
         Thread thread = new Thread(() -> {
             HtmlParcer parcer = new HtmlParcer();
+
+            try {
+                String html = getUrlSource(ADDRESS);
+                chatNodes.addAll(parcer.parce(html));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             while (true) {
                 try {
                     Thread.sleep(CHAT_UPDATE_SPEED * 1000);
-
                     String html = getUrlSource(ADDRESS);
-
                     for (ChatNode node : parcer.parce(html)) {
-                        if (!chatNodes.contains(node)) {
+                        //if (!chatNodes.contains(node)) {
+                        if (chatNodes.get(chatNodes.size()-1).getId() < node.getId()) {
                             chatNodes.add(node);
-                            if (chatNodes.size() > 20) {
-                                sendMessage(node.getId() + "-" + node.getAuthor() + ": " + node.getMessage());
-                                chatNodes.remove(0);
-                            }
+                            sendMessage(node.getId() + "-" + node.getAuthor() + ": " + node.getMessage());
+                            chatNodes.remove(0);
                         }
                         System.out.println(chatNodes.size());
                     }
