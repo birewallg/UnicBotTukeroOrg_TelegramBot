@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 public class TelegramBotCore extends TelegramLongPollingBot {
     private static final Logger logger = Logger.getLogger(TelegramBotCore.class.getName());
 
-    private static final String BOT_NAME = "";
-    private static final String BOT_TOKEN = "";
+    private static final String BOT_NAME = TelegramAPIconfig.getBotName();
+    private static final String BOT_TOKEN = TelegramAPIconfig.getBotToken();
 
     // список подписчиков
     private ArrayList<TelegramUser> observers = new ArrayList<>();
